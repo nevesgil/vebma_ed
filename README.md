@@ -4,12 +4,12 @@
 
 ### i) docker containers for all services  
 
-### i) airflow as orchestrator  
+### ii) airflow as orchestrator  
 
-### ii) spark as executor  
+### iii) spark as executor  
 
-### iii) minio (+ delta lake) as lake  
+### iv) minio (+ delta lake) as lake  
 
-### iv) to implement: flask to serve the data  
+### v) to implement: flask to serve the data  
 
-### v) to implement: grafana for monitoring  
+### vi) to implement: grafana for monitoring  
