@@ -1,0 +1,93 @@
+version: '3'
+
+x-spark-common: &spark-common
+  build:
+    context: ./spark
+    dockerfile: Dockerfile
+  volumes:
+    - ./spark/jobs:/opt/bitnami/spark/jobs
+  networks:
+    - vebma-net
+
+x-airflow-common: &airflow-common
+  build:
+    context: ./airflow
+    dockerfile: Dockerfile
+  env_file:
+    - ./airflow/airflow.env
+  volumes:
+    - ./spark/jobs:/opt/airflow/jobs
+    - ./airflow/dags:/opt/airflow/dags
+    - ./airflow/logs:/opt/airflow/logs
+    - ./spark/jobs:/usr/local/spark/jobs
+    - ./spark/jars:/opt/bitnami/spark/jars
+    - ./spark/jars:/usr/local/spark/jars
+  depends_on:
+    - postgres
+  networks:
+    - vebma-net
+
+services:
+  spark-master:
+    <<: *spark-common
+    container_name: spark-master
+    command: bin/spark-class org.apache.spark.deploy.master.Master
+    ports:
+      - "8090:8080"
+      - "7077:7077"
+
+  spark-worker:
+    <<: *spark-common
+    container_name: spark-worker
+    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+    depends_on:
+      - spark-master
+    ports:
+      - 8081:8081
+    environment:
+      SPARK_MODE: worker
+      SPARK_WORKER_CORES: 2
+      SPARK_WORKER_MEMORY: 1g
+      SPARK_MASTER_URL: spark://spark-master:7077
+
+  postgres:
+    image: postgres:14.0
+    environment:
+      - POSTGRES_USER=airflow
+      - POSTGRES_PASSWORD=airflow
+      - POSTGRES_DB=airflow
+    networks:
+      - vebma-net
+
+  webserver:
+    <<: *airflow-common
+    command: webserver
+    ports:
+      - "8082:8080"
+    depends_on:
+      - scheduler
+
+  scheduler:
+    <<: *airflow-common
+    command: bash -c "airflow db migrate && airflow users create --username admin --firstname gilmar --lastname neves --role Admin --email bla@bla.com --password admin && airflow scheduler && airflow webserver"
+
+  minio:
+    image: 'quay.io/minio/minio:latest'
+    hostname: minio
+    container_name: minio
+    ports:
+      - '9000:9000'  
+      - '9001:9001'
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+      MINIO_ACCESS_KEY: minio
+      MINIO_SECRET_KEY: minio123
+    command: server /data --console-address ":9001"
+    volumes:
+      - ./lake/minio_data:/data
+    networks:
+      - vebma-net
+
+networks:
+  vebma-net:
