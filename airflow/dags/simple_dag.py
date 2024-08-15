@@ -9,12 +9,10 @@ def generate_and_print_data():
     while time.time() - start_time < 30:
         data = random.randint(1, 100)
         print(f"Generated data: {data}")
-        time.sleep(1)  # Print data every second
+        time.sleep(1) 
 
 
 
-
-# Define default_args for the DAG
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
@@ -22,21 +20,18 @@ default_args = {
     'retries': 1,
 }
 
-# Instantiate the DAG
 dag = DAG(
     'simple_data_generation',
     default_args=default_args,
     description='A simple DAG that generates and prints data for 30 seconds',
-    schedule_interval=None,  # Set to None to run manually or use a cron expression
+    schedule_interval=None, 
     catchup=False,
 )
 
-# Define the Python task
 generate_and_print_task = PythonOperator(
     task_id='generate_and_print_data',
     python_callable=generate_and_print_data,
     dag=dag,
 )
 
-# Set the task dependencies
 generate_and_print_task
