@@ -1,5 +1,7 @@
 # VEBMA_ED
 
+![architecture](/doc/img/full_app.png)
+
 ## Base doc.
 
 ### i) Environment: Docker Containers for all services  
