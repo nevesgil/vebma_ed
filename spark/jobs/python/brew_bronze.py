@@ -3,22 +3,21 @@ from botocore.client import Config
 import requests
 import json
 from datetime import datetime
-from io import BytesIO
-import pandas as pd
 
-# MinIO configuration
-minio_endpoint = "http://minio:9000" 
+# # MinIO configuration
+minio_endpoint = "http://minio:9000"
 minio_root_user = "minio"
-minio_root_password = "minio123" 
-bucket_name = "bronze" 
+minio_root_password = "minio123"
+
+bucket_name = "bronze"
 
 s3_client = boto3.client(
-    's3',
+    "s3",
     endpoint_url=minio_endpoint,
     aws_access_key_id=minio_root_user,
     aws_secret_access_key=minio_root_password,
-    config=Config(signature_version='s3v4'),
-    region_name="us-east-1" 
+    config=Config(signature_version="s3v4"),
+    region_name="us-east-1",
 )
 
 try:
@@ -32,22 +31,19 @@ except Exception as e:
 response = requests.get("https://api.openbrewerydb.org/breweries")
 breweries_data = response.json()
 
-
 json_data = json.dumps(breweries_data, indent=2)
-json_bytes = json_data.encode('utf-8')
+json_bytes = json_data.encode("utf-8")
 
 
 current_date = datetime.now()
 partition_path = f"source=openbrewerydb/year={current_date.year}/month={current_date.month}/day={current_date.day}/"
 
 
-object_name = f"{partition_path}breweries_{current_date.strftime('%Y-%m-%d_%H-%M-%S')}.json"
+object_name = (
+    f"{partition_path}breweries_{current_date.strftime('%Y-%m-%d_%H-%M-%S')}.json"
+)
 
 
 s3_client.put_object(Bucket=bucket_name, Key=object_name, Body=json_bytes)
 print(f"JSON data uploaded to bucket '{bucket_name}' with object name '{object_name}'")
 
-
-objects = s3_client.list_objects_v2(Bucket=bucket_name, Prefix=partition_path)
-for obj in objects.get('Contents', []):
-    print(f'Object: {obj["Key"]}')
