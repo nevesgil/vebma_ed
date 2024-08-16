@@ -12,6 +12,6 @@
 
 ### iv) Lake on: MinIO  
 
-### v) TODO: Serving on: Flask App 
+### v) Serving on: Flask App 
 
 ### vi) Monitoring on: STATSD + PROMETHEUS + GRAFANA

@@ -25,6 +25,7 @@ app.config["OPENAPI_SWAGGER_UI_URL"] = (
 
 @app.route('/get-brew-json', methods=['GET'])
 def get_json():
+    # pending a previous function to get only the latest available data
     try:
         bucket_name = "bronze"
         object_name = "breweries_2024-08-16_05-09-05.json"

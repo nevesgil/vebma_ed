@@ -7,7 +7,7 @@ from airflow.operators.bash import BashOperator
 
 def generate_and_print_data():
     start_time = time.time()
-    while time.time() - start_time < 30:
+    while time.time() - start_time < 300:
         data = random.randint(1, 100)
         print(f"Generated data: {data}")
         time.sleep(1) 
