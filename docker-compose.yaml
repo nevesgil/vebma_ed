@@ -133,6 +133,18 @@ services:
     networks:
       - vebma-net
 
+  app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    image: app
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./app:/app
+    networks:
+      - vebma-net
+
 volumes:
   prometheus-v:
   prometheus-data:
