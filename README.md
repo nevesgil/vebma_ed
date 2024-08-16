@@ -1,15 +1,15 @@
 # VEBMA_ED
 
-## base doc
+## Base doc.
 
-### i) docker containers for all services  
+### i) Environment: Docker Containers for all services  
 
-### ii) airflow as orchestrator  
+### ii) Orchestration on: Apache Airflow  
 
-### iii) spark as executor  
+### iii) Jobs on: Apache Sparks  
 
-### iv) minio (+ delta lake) as lake  
+### iv) Lake on: MinIO  
 
-### v) to implement: flask to serve the data  
+### v) TODO: Serving on: Flask App 
 
-### vi) to implement: grafana for monitoring  
+### vi) Monitoring on: STATSD + PROMETHEUS + GRAFANA
