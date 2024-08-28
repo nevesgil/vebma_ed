@@ -47,3 +47,4 @@ object_name = (
 s3_client.put_object(Bucket=bucket_name, Key=object_name, Body=json_bytes)
 print(f"JSON data uploaded to bucket '{bucket_name}' with object name '{object_name}'")
 
+# TODO: add validation layer before sending the data into the lake

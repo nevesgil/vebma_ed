@@ -8,10 +8,10 @@
 
 ### ii) Orchestration on: Apache Airflow  
 
-### iii) Jobs on: Apache Sparks  
+### iii) Jobs on: Apache Spark 
 
 ### iv) Lake on: MinIO  
 
-### v) Serving on: Flask App 
+### v) Serving on: Flask app
 
-### vi) Monitoring on: STATSD + PROMETHEUS + GRAFANA
+### vi) Monitoring on: StatsD + Prometheus + Grafana
