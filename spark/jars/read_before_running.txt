@@ -1,0 +1,5 @@
+THE JARS TO BE PLACED HERE ARE:
+
+aws-java-sdk-bundle-1.12.262.jar
+hadoop-aws-3.3.4.jar
+delta-core_2.12-2.1.0.jar
